@@ -3,11 +3,11 @@
 export default function Home() {
   return (
     <main>
-      <h1 className="text-3xl font-bold underline">
+      <h1 className="text-3xl font-bold">
         Hello world!
       </h1>
-      Link to <a href="/users">Users</a>
-      Link to <a href="/users/new">New User</a>
+  
+      
 
     </main>
   
