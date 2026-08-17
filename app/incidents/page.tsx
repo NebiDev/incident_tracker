@@ -4,12 +4,12 @@ import React from 'react'
 import {Button} from "@radix-ui/themes"
 import Link  from 'next/link'
 
-const IssuesPage = () => {
+const IncidentsPage = () => {
   return (
     <div>
-        <h1>Issues Page</h1>
+        <h1>Incidents Page</h1>
         <Button>
-            <Link href="/issues/new" className='flex items-center gap-2'>
+            <Link href="/incidents/new" className='flex items-center gap-2'>
                 New Incident
             </Link>
             
@@ -20,4 +20,4 @@ const IssuesPage = () => {
   )
 }
 
-export default IssuesPage
+export default IncidentsPage
