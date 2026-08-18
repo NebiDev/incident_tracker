@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import {Theme, ThemePanel} from "@radix-ui/themes"
 import "./globals.css";
+import { Toaster } from "sonner";
 import Navbar from "./Navbar";
 
 // const geistSans = Geist({
@@ -36,7 +37,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       
         <Theme accentColor="iris" appearance="light" className="flex flex-col min-h-full">
         <Navbar />
-        <main >{children}</main>
+        <main >{children}
+        <Toaster richColors position="top-right" />
+        </main>
         <ThemePanel />
         </Theme>
       </body>
