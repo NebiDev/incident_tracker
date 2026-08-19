@@ -1,5 +1,5 @@
 "use client";
-
+import {useState} from "react";
 import { TextField, Button } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import { useForm, Controller } from "react-hook-form";
@@ -8,12 +8,17 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {zodResolver} from "@hookform/resolvers/zod";
 import { createIncidentSchema } from "../../validationSchemas";
+
 import {z} from "zod";
 import "easymde/dist/easymde.min.css";
+import ErrorMessage from "../../components/ErrorMessage";
+import { Spinner } from "@radix-ui/themes";
+
 
 type IncidentForm = z.infer<typeof createIncidentSchema>;
 
 const NewIncidentpage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const { register, control, handleSubmit, formState: { errors } } = useForm<IncidentForm>({ resolver: zodResolver(createIncidentSchema) });
@@ -24,12 +29,14 @@ const NewIncidentpage = () => {
         className="space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setIsSubmitting(true);
             await axios.post("/api/incidents", data);
 
             toast.success("Incident created successfully!");
 
             router.push("/incidents");
           } catch (error) {
+            setIsSubmitting(false);
             if (axios.isAxiosError(error)) {
               const issues = error.response?.data?.errors;
 
@@ -49,9 +56,9 @@ const NewIncidentpage = () => {
           placeholder="Incident Title"
           {...register("title")}
         />
-        {errors.title && (
-          <p className="text-red-500 text-sm">{errors.title.message}</p>
-        )}
+       
+          <ErrorMessage>{errors.title?.message}</ErrorMessage>
+      
 
         <Controller
           name="description"
@@ -60,11 +67,15 @@ const NewIncidentpage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
-        {errors.description && (
-          <p className="text-red-500 text-sm">{errors.description.message}</p>
-        )}
+        
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
+        
 
-        <Button type="submit">Submit</Button>
+        <Button
+         disabled={isSubmitting}
+          type="submit">Submit Incident{isSubmitting && <Spinner/>} 
+
+          </Button>
       </form>
     </div>
   );
