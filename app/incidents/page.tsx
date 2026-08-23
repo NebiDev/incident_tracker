@@ -35,7 +35,9 @@ const IncidentsPage = async () => {
                     {(await incidents).map(incident => (
                         <Table.Row key={incident.id}>
                             <Table.Cell>
-                                {incident.title}
+                                <Link href={`/incidents/${incident.id}`} className='font-medium'>
+                                    {incident.title}
+                                </Link>
                                 <div className='block md:hidden'>
                                     <IncidentStatusBadge status={incident.status} />
 
