@@ -40,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                     <main >{children}
                         <Toaster richColors position="top-right" />
                     </main>
-                    <ThemePanel />
+                    {/* <ThemePanel /> */}
                 </Theme>
             </body>
         </html>

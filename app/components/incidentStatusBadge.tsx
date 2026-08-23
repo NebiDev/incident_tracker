@@ -16,7 +16,7 @@ const statusMap: Record<
 
 };
 
-const incidentStatusBadge = ({status}: {status: Status}) => {
+const IncidentStatusBadge = ({status}: {status: Status}) => {
    
   return (
     <Badge color={statusMap[status].color}>
@@ -25,4 +25,4 @@ const incidentStatusBadge = ({status}: {status: Status}) => {
   )
 }
 
-export default incidentStatusBadge
+export default IncidentStatusBadge
