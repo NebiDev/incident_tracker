@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Bug } from 'lucide-react';
 import {clsx} from 'clsx'
-import { link } from 'fs/promises';
+
 
 const Navbar = () => {
   const pathname = usePathname()
@@ -16,7 +16,7 @@ const Navbar = () => {
     { label: "Incidents", href: "/incidents" },
   ];
   return (
-    <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
+    <nav className="flex space-x-6 border-b mb-4 px-5 h-14 items-center">
       <Link href="/"><Bug /></Link>
       <ul className="flex space-x-6 ">
         {links.map((link) => (
