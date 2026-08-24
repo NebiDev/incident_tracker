@@ -2,7 +2,8 @@
 
 import React from 'react'
 import { Button, Table } from "@radix-ui/themes"
-import Link from 'next/link'
+import Link from '../components/Link'
+import NextLink from 'next/link'
 import prisma from '@/prisma/client'
 import IncidentStatusBadge from '../components/incidentStatusBadge'
 
@@ -16,9 +17,9 @@ const IncidentsPage = async () => {
         <div>
             <div className='mb-5'>
             <Button >
-                <Link href="/incidents/new" className='flex items-center gap-2'>
+                <NextLink href="/incidents/new" className='flex items-center gap-2'>
                     New Incident
-                </Link>
+                </NextLink>
             </Button>
             </div>
 

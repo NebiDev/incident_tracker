@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { Heading, Text, Flex, Card } from '@radix-ui/themes'
 import IncidentStatusBadge from '../../components/incidentStatusBadge'
 import ReactMarkdown from 'react-markdown'
+import delay from 'delay'
 
 
 interface Props {
@@ -30,8 +31,11 @@ const IncidentDetailPage = async ({ params }: Props) => {
         notFound()
     }
 
+    await delay(200) // Simulate a delay for loading state
+
+
     return (
-        <div>
+        <div className='max-w-4xl '>
             <Heading>{incident.title}</Heading>
             <Flex gap="2" align="center" className='mb-3'>
                 <IncidentStatusBadge status={incident.status} />
