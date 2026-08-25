@@ -1,12 +1,12 @@
 
 
 import React from 'react'
-import {Status } from '@prisma/client'
+import { Status } from '@/app/generated/prisma/client'
 import { Badge } from "@radix-ui/themes";
 
 
 const statusMap: Record<
-    Status, 
+    Status,
     { label: string; color: 'red' | 'violet' | 'green'} 
     > = {
     OPEN: { label: 'Open', color: 'red' },

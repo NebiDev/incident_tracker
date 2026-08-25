@@ -1,11 +1,13 @@
 
 
-import React from 'react'
-import { Button, Table } from "@radix-ui/themes"
-import Link from '../components/Link'
-import NextLink from 'next/link'
 import prisma from '@/prisma/client'
-import IncidentStatusBadge from '../components/incidentStatusBadge'
+import { Button, Table } from "@radix-ui/themes"
+import { IncidentStatusBadge, Link } from '@/app/components'
+import NextLink from 'next/link'
+// import IncidentStatusBadge from '../components/incidentStatusBadge'
+// import Link from '../components/Link'
+
+
 
 
 const IncidentsPage = async () => {

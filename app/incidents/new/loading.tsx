@@ -1,11 +1,10 @@
-import React from 'react'
+import { Skeleton } from '@/app/components'
 import {Box, Flex } from '@radix-ui/themes'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+
 
 const LoadingNewIncidentPage = () => {
   return (
-    <Box className='max-w-xl '>
+    <Box className='max-w-4xl '>
         <Skeleton/>
         <Flex gap="2" align="center" className='mb-3'>
             <Skeleton width='5rem' />

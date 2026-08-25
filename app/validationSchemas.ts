@@ -8,6 +8,6 @@ export const createIncidentSchema = z.object({
 
     description: z
         .string()
-        .min(10, "Description must be at least 10 characters long")
+        .min(10, "Description is required and must be at least 10 characters long")
         .max(255, "Description cannot exceed 255 characters"),
 });

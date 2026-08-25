@@ -1,10 +1,11 @@
 import React from 'react'
 import prisma from '@/prisma/client'
 import { notFound } from 'next/navigation'
-import { Heading, Text, Flex, Card } from '@radix-ui/themes'
-import IncidentStatusBadge from '../../components/incidentStatusBadge'
-import ReactMarkdown from 'react-markdown'
+import { Grid, Box } from '@radix-ui/themes'
 import delay from 'delay'
+import EditIncidentButton from './EditIncidentButton'
+import IncidentDetails from './IncidentDetails'
+
 
 
 interface Props {
@@ -35,17 +36,16 @@ const IncidentDetailPage = async ({ params }: Props) => {
 
 
     return (
-        <div className='max-w-4xl '>
-            <Heading>{incident.title}</Heading>
-            <Flex gap="2" align="center" className='mb-3'>
-                <IncidentStatusBadge status={incident.status} />
-                <Text>{incident.createdAt.toDateString()}</Text>
-            </Flex>
-            <Card className='prose max-w-none mt-4'>
-                <ReactMarkdown>{incident.description}</ReactMarkdown>
-            </Card>
+        <Grid columns={{initial: '1', md:'2'} } className='max-w-4xl gap-4'>
+            <Box>
+                <IncidentDetails incident={incident} />
             
-        </div>
+            </Box>
+            <Box>
+                <EditIncidentButton incidentId={incident.id} />
+                
+            </Box>            
+        </Grid>
     )
 }
 

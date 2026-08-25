@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { TextField, Button } from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
+// import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -12,7 +13,9 @@ import { z } from "zod";
 import "easymde/dist/easymde.min.css";
 import ErrorMessage from "../../components/ErrorMessage";
 import { Spinner } from "@radix-ui/themes";
-import delay from "delay";
+// import delay from "delay";
+
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), { ssr: false });
 
 
 type IncidentForm = z.infer<typeof createIncidentSchema>;
@@ -21,7 +24,13 @@ const NewIncidentpage = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const router = useRouter();
 
-	const { register, control, handleSubmit, formState: { errors } } = useForm<IncidentForm>({ resolver: zodResolver(createIncidentSchema) });
+	const { register, control, handleSubmit, formState: { errors } } = useForm<IncidentForm>({ 
+		resolver: zodResolver(createIncidentSchema),
+		defaultValues: {
+			title: "",
+			description: "",
+		}
+	 });
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
@@ -47,7 +56,7 @@ const NewIncidentpage = () => {
 		}
 	})
 	return (
-		<div className="max-w-xl">
+		<div className="max-w-4xl">
 			<form
 				className="space-y-3"
 				onSubmit={onSubmit}
@@ -56,7 +65,7 @@ const NewIncidentpage = () => {
 					placeholder="Incident Title"
 					{...register("title")}
 				/>
-				<ErrorMessage>{errors.title?.message}</ErrorMessage>
+				<ErrorMessage >{errors.title?.message}</ErrorMessage>
 				<Controller
 					name="description"
 					control={control}
