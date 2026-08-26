@@ -8,7 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createIncidentSchema } from "../../validationSchemas";
+import { incidentSchema } from "../../validationSchemas";
 import { z } from "zod";
 import "easymde/dist/easymde.min.css";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -19,7 +19,7 @@ import { Incident } from "@/app/generated/prisma/client";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), { ssr: false });
 
 
-type IncidentFormData = z.infer<typeof createIncidentSchema>;
+type IncidentFormData = z.infer<typeof incidentSchema>;
 
 
 
@@ -28,7 +28,7 @@ const IncidentForm = ({ incident }: { incident?: Incident }) => {
     const router = useRouter();
 
     const { register, control, handleSubmit, formState: { errors } } = useForm<IncidentFormData>({
-        resolver: zodResolver(createIncidentSchema),
+        resolver: zodResolver(incidentSchema),
         defaultValues: {
             title: incident?.title ?? "",
             description: incident?.description ?? "",
@@ -38,11 +38,19 @@ const IncidentForm = ({ incident }: { incident?: Incident }) => {
     const onSubmit = handleSubmit(async (data) => {
         try {
             setIsSubmitting(true);
+            if (incident) {
+                await axios.patch(`/api/incidents/${incident.id}`, data);
+
+                toast.success("Incident updated successfully!");
+
+            } else {
             await axios.post("/api/incidents", data);
 
             toast.success("Incident created successfully!");
 
+            }
             router.push("/incidents");
+            // router.refresh();
         } catch (error) {
             setIsSubmitting(false);
             if (axios.isAxiosError(error)) {
@@ -55,9 +63,13 @@ const IncidentForm = ({ incident }: { incident?: Incident }) => {
                     return;
                 }
             }
-            toast.error("Failed to create incident. Please try again.");
+            toast.error(
+                incident
+                    ? "Failed to update incident. Please try again."
+                    : "Failed to create incident. Please try again."
+            );
         }
-    })
+        });
     return (
         <div className="max-w-4xl">
             <form
@@ -81,7 +93,8 @@ const IncidentForm = ({ incident }: { incident?: Incident }) => {
                 <ErrorMessage>{errors.description?.message}</ErrorMessage>
                 <Button
                     disabled={isSubmitting}
-                    type="submit">Submit Incident{isSubmitting && <Spinner />}
+                    type="submit">
+                        {incident ? "Update Incident" : "Create Incident"}{isSubmitting && <Spinner />}
 
                 </Button>
             </form>

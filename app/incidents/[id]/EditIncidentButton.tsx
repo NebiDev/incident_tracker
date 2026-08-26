@@ -7,7 +7,7 @@ const EditIncidentButton = ({incidentId}: {incidentId: number}) => {
   return (
     <div>
           <Button>
-              <SquarePen className='mr-2' />
+              <SquarePen className='mr-2 '  />
               <Link href={`/incidents/${incidentId}/edit`}>Edit</Link>
           </Button>
       

@@ -2,7 +2,7 @@ import React from 'react'
 import prisma from '@/prisma/client'
 import { notFound } from 'next/navigation'
 import { Grid, Box } from '@radix-ui/themes'
-import delay from 'delay'
+// import delay from 'delay'
 import EditIncidentButton from './EditIncidentButton'
 import IncidentDetails from './IncidentDetails'
 
@@ -32,7 +32,7 @@ const IncidentDetailPage = async ({ params }: Props) => {
         notFound()
     }
 
-    await delay(200) // Simulate a delay for loading state
+    // await delay(200) // Simulate a delay for loading state
 
 
     return (

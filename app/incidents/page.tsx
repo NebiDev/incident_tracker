@@ -62,5 +62,9 @@ const IncidentsPage = async () => {
         </div>
     )
 }
+export const dynamic = 'force-dynamic' // this page should always be server rendered, no caching
+
+// or we can use revalidate = 0 to achieve the same effect, but dynamic is more explicit and clear
+ // export const revalidate = 0 
 
 export default IncidentsPage
