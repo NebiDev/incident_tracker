@@ -1,7 +1,14 @@
-
+// 'use client';
 import { notFound } from 'next/navigation'
 import IncidentForm from '../../_components/IncidentForm'
 import prisma from '@/prisma/client'
+// import dynamic from 'next/dynamic'
+// import IncidentFormSkeleton from './Loading'
+
+// const IncidentForm = dynamic(() => import('../../_components/IncidentForm'), { ssr: false,
+//       loading: () => <IncidentFormSkeleton />
+// });
+
 
 interface EditIncidentPageProps {
     params: Promise<{
@@ -23,10 +30,6 @@ const EditIncidentPage = async ({ params }: EditIncidentPageProps) => {
         }
     })
     if (!incident)  notFound()
-
-
-
-
 
   return (
     <div>

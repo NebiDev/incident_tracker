@@ -1,10 +1,11 @@
 import React from 'react'
 import prisma from '@/prisma/client'
 import { notFound } from 'next/navigation'
-import { Grid, Box } from '@radix-ui/themes'
+import { Grid, Box, Flex } from '@radix-ui/themes'
 // import delay from 'delay'
 import EditIncidentButton from './EditIncidentButton'
 import IncidentDetails from './IncidentDetails'
+import DeleteIncidentButton from './DeleteIncidentButton'
 
 
 
@@ -36,17 +37,23 @@ const IncidentDetailPage = async ({ params }: Props) => {
 
 
     return (
-        <Grid columns={{initial: '1', md:'2'} } className='max-w-4xl gap-4'>
+        <Grid
+            columns={{ initial: "1", sm: "minmax(0, 1fr) auto" }}
+            gap="5"
+            align="start"
+        >
             <Box>
                 <IncidentDetails incident={incident} />
-            
             </Box>
+
             <Box>
-                <EditIncidentButton incidentId={incident.id} />
-                
-            </Box>            
+                <Flex direction="column" gap="4">
+                    <EditIncidentButton incidentId={incident.id} />
+                    <DeleteIncidentButton incidentId={incident.id} />
+                </Flex>
+            </Box>
         </Grid>
-    )
+    );
 }
 
 export default IncidentDetailPage

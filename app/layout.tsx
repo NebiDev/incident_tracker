@@ -6,6 +6,7 @@ import { Theme, ThemePanel } from "@radix-ui/themes"
 import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "./Navbar";
+import { Container } from "lucide-react";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -33,12 +34,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             lang="en" data-theme="winter"
             className={inter.variable}
         >
-            <body className="min-h-full flex flex-col">
+            <body className={inter.variable}>
 
-                <Theme accentColor="iris" appearance="light" className="flex flex-col min-h-full">
+                <Theme accentColor="iris" appearance="light" >
                     <Navbar />
-                    <main >{children}
-                        <Toaster richColors position="top-right" />
+                    <main className="p-5">
+                    
+                            {children}
+                            <Toaster richColors position="top-right" />
+                        
                     </main>
                     {/* <ThemePanel /> */}
                 </Theme>

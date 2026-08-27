@@ -13,7 +13,7 @@ const IncidentDetails = ({ incident }: { incident: Incident }) => {
                 <IncidentStatusBadge status={incident.status} />
                 <Text>{incident.createdAt.toDateString()}</Text>
             </Flex>
-            <Card className='prose max-w-none mt-4'>
+            <Card className='prose max-w-full mt-4'>
                 <ReactMarkdown>{incident.description}</ReactMarkdown>
             </Card>
 

@@ -1,5 +1,14 @@
+"use client";
+import dynamic from 'next/dynamic'
+import IncidentFormSkeleton from '../_components/IncidentFormSkeleton'
 
-import IncidentForm from '../_components/IncidentForm'
+
+
+const IncidentForm = dynamic(() => import('../_components/IncidentForm'), { ssr: false,
+	  loading: () => <IncidentFormSkeleton /> 
+	
+
+ });
 
 const NewIncidentPage = () => {
   return (

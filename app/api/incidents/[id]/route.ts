@@ -36,7 +36,7 @@ export async function PATCH(
                 id: incidentId,
             },
             data: result.data,
-            
+
         });
 
         return NextResponse.json(updatedIncident);
@@ -55,6 +55,50 @@ export async function PATCH(
 
         return NextResponse.json(
             { error: "Failed to update incident." },
+            { status: 500 }
+        );
+    }
+}
+
+
+export async function DELETE(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    const { id } = await params;
+
+    const incidentId = Number(id);
+
+    if (!Number.isInteger(incidentId)) {
+        return NextResponse.json(
+            { error: "Invalid incident ID." },
+            { status: 400 }
+        );
+    }
+
+    try {
+        const deletedIncident = await prisma.incident.delete({
+            where: {
+                id: incidentId,
+            },
+        });
+
+        return NextResponse.json(deletedIncident);
+    } catch (error) {
+        if (
+            error instanceof Prisma.PrismaClientKnownRequestError &&
+            error.code === "P2025"
+        ) {
+            return NextResponse.json(
+                { error: "Incident not found." },
+                { status: 404 }
+            );
+        }
+
+        console.error(error);
+
+        return NextResponse.json(
+            { error: "Failed to delete incident." },
             { status: 500 }
         );
     }
