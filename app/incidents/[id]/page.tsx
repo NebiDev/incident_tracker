@@ -15,9 +15,9 @@ interface Props {
     }>
 }
 const IncidentDetailPage = async ({ params }: Props) => {
-    
+
     const { id } = await params
-    
+
     const incidentId = parseInt(id)
     if (!Number.isInteger(incidentId)) {
         notFound()

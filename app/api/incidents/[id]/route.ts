@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { incidentSchema } from "@/app/validationSchemas";
 import { Prisma } from "@/app/generated/prisma/client";
-import { toast } from "sonner";
+import delay from "delay";
+
 
 export async function PATCH(
     req: NextRequest,

@@ -7,7 +7,7 @@ import { Incident } from '@/app/generated/prisma/client'
 
 const IncidentDetails = ({ incident }: { incident: Incident }) => {
     return (
-        <>
+        < >
             <Heading>{incident.title}</Heading>
             <Flex gap="2" align="center" className='mb-3'>
                 <IncidentStatusBadge status={incident.status} />

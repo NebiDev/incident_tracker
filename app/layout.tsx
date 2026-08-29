@@ -6,7 +6,7 @@ import { Theme, ThemePanel } from "@radix-ui/themes"
 import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "./Navbar";
-import { Container } from "lucide-react";
+import AuthProvider from "./api/auth/Provider";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -35,17 +35,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             className={inter.variable}
         >
             <body className={inter.variable}>
+                <AuthProvider>
 
-                <Theme accentColor="iris" appearance="light" >
-                    <Navbar />
-                    <main className="p-5">
-                    
+                    <Theme accentColor="iris" appearance="light" >
+                        <Navbar />
+                        <main className="p-5">
+
+
                             {children}
                             <Toaster richColors position="top-right" />
-                        
-                    </main>
-                    {/* <ThemePanel /> */}
-                </Theme>
+
+                        </main>
+                        {/* <ThemePanel /> */}
+                    </Theme>
+                </AuthProvider>
             </body>
         </html>
     );

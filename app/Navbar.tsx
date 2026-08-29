@@ -5,10 +5,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Bug } from 'lucide-react';
 import {clsx} from 'clsx'
+import { Box } from '@radix-ui/themes'
+import {useSession} from 'next-auth/react'
 
 
 const Navbar = () => {
   const pathname = usePathname()
+  const { status, data: session } = useSession()
 
 
   const links = [
@@ -27,6 +30,14 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
+      <Box>
+        {status === "authenticated" && (
+          <Link href="/api/auth/signout" className="hover:text-blue-500">Sign Out</Link>
+        )}
+        {status === "unauthenticated" && (
+          <Link href="/api/auth/signin" className="hover:text-blue-500">Sign In</Link>
+        )}
+      </Box>
 
     </nav>
   )
