@@ -8,6 +8,7 @@ import IncidentDetails from './IncidentDetails'
 import DeleteIncidentButton from './DeleteIncidentButton'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/app/api/auth/authOptions'
+import AssigneeSelect from './AssigneeSelect'
 
 
 
@@ -52,6 +53,7 @@ const IncidentDetailPage = async ({ params }: Props) => {
             {session && (
                 <Box>
                     <Flex direction="column" gap="4">
+                        <AssigneeSelect/>
                         <EditIncidentButton incidentId={incident.id} />
                         <DeleteIncidentButton incidentId={incident.id} />
                     </Flex>
