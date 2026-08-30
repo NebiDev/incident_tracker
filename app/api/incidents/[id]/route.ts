@@ -3,12 +3,21 @@ import prisma from "@/prisma/client";
 import { incidentSchema } from "@/app/validationSchemas";
 import { Prisma } from "@/app/generated/prisma/client";
 import delay from "delay";
+import authOptions from "../../auth/authOptions";
+import { getServerSession } from "next-auth";
 
 
 export async function PATCH(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json(
+            { message: "Unauthorized" },
+            { status: 401 }
+        );
+    }
     const { id } = await params;
 
     const incidentId = Number(id);
@@ -66,6 +75,13 @@ export async function DELETE(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json(
+            { message: "Unauthorized" },
+            { status: 401 }
+        );
+    }
     const { id } = await params;
 
     const incidentId = Number(id);

@@ -1,6 +1,7 @@
 "use client"
 
-import React from 'react'
+// import Skeleton from components/Skeleton\
+import Skeleton from './components/Skeleton'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Bug } from 'lucide-react';
@@ -68,7 +69,7 @@ const NavLinks = () => {
 const AuthStatus = () => {
     const { status, data: session } = useSession()
 
-    if (status === "loading") return null;
+    if (status === "loading") return <Skeleton width={100} height={20} />;
     if (status === "unauthenticated") 
     return <Link href="/api/auth/signin" className="hover:text-blue-500">Sign In</Link>
 

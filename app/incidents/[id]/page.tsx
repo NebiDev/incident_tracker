@@ -6,6 +6,8 @@ import { Grid, Box, Flex } from '@radix-ui/themes'
 import EditIncidentButton from './EditIncidentButton'
 import IncidentDetails from './IncidentDetails'
 import DeleteIncidentButton from './DeleteIncidentButton'
+import { getServerSession } from 'next-auth'
+import authOptions from '@/app/api/auth/authOptions'
 
 
 
@@ -15,6 +17,8 @@ interface Props {
     }>
 }
 const IncidentDetailPage = async ({ params }: Props) => {
+    // Ensure the user is authenticated before proceeding
+    const session = await getServerSession(authOptions)
 
     const { id } = await params
 
@@ -45,13 +49,17 @@ const IncidentDetailPage = async ({ params }: Props) => {
             <Box>
                 <IncidentDetails incident={incident} />
             </Box>
+            {session && (
+                <Box>
+                    <Flex direction="column" gap="4">
+                        <EditIncidentButton incidentId={incident.id} />
+                        <DeleteIncidentButton incidentId={incident.id} />
+                    </Flex>
+                </Box>
+            )}
 
-            <Box>
-                <Flex direction="column" gap="4">
-                    <EditIncidentButton incidentId={incident.id} />
-                    <DeleteIncidentButton incidentId={incident.id} />
-                </Flex>
-            </Box>
+
+            
         </Grid>
     );
 }
