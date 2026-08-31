@@ -7,6 +7,8 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "./Navbar";
 import AuthProvider from "./api/auth/Provider";
+import  QueryClientProvider  from "./QueryClientProvider";
+
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -35,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             className={inter.variable}
         >
             <body className={inter.variable}>
+                <QueryClientProvider>
                 <AuthProvider>
 
                     <Theme accentColor="iris" appearance="light" >
@@ -49,6 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                         {/* <ThemePanel /> */}
                     </Theme>
                 </AuthProvider>
+                </QueryClientProvider>
             </body>
         </html>
     );
