@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { incidentSchema } from "@/app/validationSchemas";
-import { Prisma } from "@/app/generated/prisma/client";
-import delay from "delay";
+// import { incidentSchema } from "@/app/validationSchemas";
+import {patchIncidentSchema as incidentSchema} from "@/app/validationSchemas";
+import { Prisma } from "@prisma/client";
 import authOptions from "../../auth/authOptions";
 import { getServerSession } from "next-auth";
 
@@ -40,12 +40,31 @@ export async function PATCH(
         );
     }
 
+    // validate assignedToUserId
+    const { assignedToUserId } = result.data;
+    if(assignedToUserId) {
+        const user = await prisma.user.findUnique({
+            where: { id: assignedToUserId },
+        });
+        if (!user) {
+            return NextResponse.json(
+                { error: "Assigned user not found." },
+                { status: 400 }
+            );
+        }
+    }
+
     try {
         const updatedIncident = await prisma.incident.update({
             where: {
                 id: incidentId,
             },
-            data: result.data,
+            data: {
+                title: result.data.title,
+                description: result.data.description,
+                status: result.data.status,
+                assignedToUserId: result.data.assignedToUserId || null,
+            }
 
         });
 
