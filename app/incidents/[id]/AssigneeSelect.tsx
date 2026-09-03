@@ -2,12 +2,12 @@
 
 // import {useState, useEffect} from "react"
 import {Select} from '@radix-ui/themes'
-import {User} from "@prisma/client"
+import {Incident, User} from "@prisma/client"
 import axios from "axios"
 import {useQuery} from "@tanstack/react-query"
 import Skeleton from "react-loading-skeleton"
 
-const AssigneeSelect = () => {
+const AssigneeSelect = ({incident}: {incident: Incident}) => {
 
     const {data: users = [], isLoading, error} = useQuery<User[]>({
         queryKey: ["users"],
@@ -28,11 +28,19 @@ const AssigneeSelect = () => {
 
   return (
     <>
-        <Select.Root>
-            <Select.Trigger placeholder="Assignee" />
+          <Select.Root
+              defaultValue={incident.assignedToUserId?.toString() ?? ""}
+              onValueChange={(userId) => {
+                  axios.patch(`/api/incidents/${incident.id}`, {
+                      assignedToUserId: userId || null,
+                  });
+              }}
+          >
+            <Select.Trigger placeholder="Assign..." />
                 <Select.Content>
                     <Select.Group>
                         <Select.Label>Suggestions</Select.Label>
+                        <Select.Item value="">Unassigned</Select.Item>
                         {users?.map((user) => (
                             <Select.Item key={user.id} value={user.id.toString()}>
                                 {user.name}
