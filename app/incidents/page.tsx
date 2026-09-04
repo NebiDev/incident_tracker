@@ -4,6 +4,7 @@ import prisma from '@/prisma/client'
 import { Button, Table } from "@radix-ui/themes"
 import { IncidentStatusBadge, Link } from '@/app/components'
 import NextLink from 'next/link'
+import IncidentActions from './list/IncidentActions'
 // import IncidentStatusBadge from '../components/incidentStatusBadge'
 // import Link from '../components/Link'
 
@@ -17,13 +18,14 @@ const IncidentsPage = async () => {
 
     return (
         <div>
-            <div className='mb-5'>
+            {/* <div className='mb-5'>
             <Button >
                 <NextLink href="/incidents/new" className='flex items-center gap-2'>
                     New Incident
                 </NextLink>
             </Button>
-            </div>
+            </div> */}
+            <IncidentActions/>
 
             <Table.Root variant='surface'>
             <Table.Header>
