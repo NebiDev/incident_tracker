@@ -2,7 +2,7 @@
 import { Button, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 // import SimpleMDE from "react-simplemde-editor";
-import { Incident } from "@/app/generated/prisma/client";
+import type { Incident } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Spinner } from "@radix-ui/themes";
 import axios from "axios";
