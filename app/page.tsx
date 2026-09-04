@@ -3,9 +3,14 @@
 export default function Home() {
     return (
         <main>
-            <h1 className="text-3xl font-bold">
-                Hello world!
-            </h1>
+            {/* this is home page for the incident tracker. will have a few sections (landing page)*/}
+
+            
+
+
+            
+
+           
 
 
 
