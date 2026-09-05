@@ -10,7 +10,7 @@ import { getServerSession } from 'next-auth'
 import authOptions from '@/app/api/auth/authOptions'
 import AssigneeSelect from './AssigneeSelect'
 import type { Metadata } from 'next'
-
+import { cache } from 'react'
 
 
 interface Props {
@@ -18,27 +18,25 @@ interface Props {
         id: string
     }>
 }
+const fetchIncident = cache((incidentId: number) => prisma.incident.findUnique({
+    where: {
+        id: incidentId
+    }
+})  )
+
+
 const IncidentDetailPage = async ({ params }: Props) => {
     // Ensure the user is authenticated before proceeding
     const session = await getServerSession(authOptions)
-
     const { id } = await params
-
     const incidentId = parseInt(id)
     if (!Number.isInteger(incidentId)) {
         notFound()
     }
-    const incident = await prisma.incident.findUnique({
-        where: {
-            id: incidentId
-        }
-    })
+    const incident = await fetchIncident(incidentId)
     if (!incident) {
         notFound()
     }
-
-    // await delay(200) // Simulate a delay for loading state
-
 
     return (
         <Grid
@@ -72,11 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: "The requested incident does not exist."
         }
     }
-    const incident = await prisma.incident.findUnique({
-        where: {
-            id: incidentId
-        }
-    })
+    const incident = await fetchIncident(incidentId)
     if (!incident) {
         return {
             title: "Incident Not Found",
