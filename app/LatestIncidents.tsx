@@ -44,13 +44,13 @@ const LatestIncidents = async () => {
                             </Flex>
                         </Table.Cell>
 
-                        <Table.Cell>
+                        {/* <Table.Cell>
                             {incident.description}
                         </Table.Cell>
 
                         <Table.Cell>
                             {incident.createdAt.toISOString()}
-                        </Table.Cell>
+                        </Table.Cell> */}
                     </Table.Row>
                 ))}
             </Table.Body>
