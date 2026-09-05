@@ -23,17 +23,9 @@ const Navbar = () => {
                         <span>Incident Tracker</span>
                     </Link> */}
                     <NavLinks/>
-
-
                 </Flex>
                 <AuthStatus />
-
-
             </Flex>
-
-
-
-
         </nav>
     )
 }
@@ -44,8 +36,6 @@ const NavLinks = () => {
         { label: "Dashboard", href: "/" },
         { label: "Incidents", href: "/incidents" },
     ];
-
-
     return (
         <ul className="flex space-x-6 ">
             {links.map((link) => (
@@ -73,11 +63,8 @@ const AuthStatus = () => {
     if (status === "unauthenticated") 
     return <Link href="/api/auth/signin" className="hover:text-blue-500">Sign In</Link>
 
-
-
     return (
-        <Box>
-            
+        <Box>           
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger >
                         <Avatar
@@ -98,13 +85,8 @@ const AuthStatus = () => {
                             {/* <Link href="/api/auth/signout" >Sign Out</Link> */}
                         Sign Out
                         </DropdownMenu.Item>
-
-
                     </DropdownMenu.Content>
-
-                </DropdownMenu.Root>
-       
-            
+                </DropdownMenu.Root>          
         </Box>
     )
 }

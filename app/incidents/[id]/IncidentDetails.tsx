@@ -1,7 +1,7 @@
 import { Heading, Card, Flex, Text } from '@radix-ui/themes'
 import ReactMarkdown from 'react-markdown'
 import IncidentStatusBadge from '../../components/IncidentStatusBadge'
-import { Incident } from '@/app/generated/prisma/client' 
+import { Incident } from '@prisma/client' 
 
 
 
