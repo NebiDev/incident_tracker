@@ -1,16 +1,17 @@
 
 import NextLink from 'next/link'
 import { Button } from '@radix-ui/themes'
-import React from 'react'
+import { Plus } from 'lucide-react';
 import { Flex } from '@radix-ui/themes'
 import IncidentStatusFilter from './IncidentStatusFilter'
 
 const IncidentActions = () => {
   return (
-    <Flex mb="5" justify="between" align="center">
+    <Flex justify="between" >
         <IncidentStatusFilter/>
-      <Button >
+      <Button>
         <NextLink href="/incidents/new" className='flex items-center gap-2'>
+          <Plus size={16} />
           New Incident
         </NextLink>
       </Button>

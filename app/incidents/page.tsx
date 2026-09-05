@@ -1,28 +1,20 @@
 import prisma from '@/prisma/client'
-import { Table, Flex } from "@radix-ui/themes"
-import { IncidentStatusBadge, Link } from '@/app/components'
+import { Flex } from "@radix-ui/themes"
+import IncidentTable, { SearchParamsProps, SortableColumn,  columnNames } from './list/IncidentTable'
 import { Status, Incident } from '@prisma/client'
-import NextLink from 'next/link'
-import { ArrowUp } from 'lucide-react'
-
 import IncidentActions from './list/IncidentActions'
 import Pagination from './_components/Pagination'
 
 interface IncidentsPageProps {
     searchParams: Promise<{
         status?: Status
-        orderBy?: keyof Incident
+        orderBy?: SortableColumn
+        sortOrder?: 'asc' | 'desc'
         page?: string
     }>
 }
 
 const IncidentsPage = async ({ searchParams }: IncidentsPageProps) => {
-    const columns: { label: string; value: keyof Incident; className?: string }[] = [
-        { label: "Incident", value: "title" },
-        { label: "Status", value: "status", className: 'hidden md:table-cell' },
-        { label: "Created", value: "createdAt", className: 'hidden md:table-cell' },
-    ]
-
     // 1. Await searchParams
     const resolvedSearchParams = await searchParams
 
@@ -32,25 +24,27 @@ const IncidentsPage = async ({ searchParams }: IncidentsPageProps) => {
         ? resolvedSearchParams.status
         : undefined
 
-    // 3. Validate orderBy to prevent SQL injection / invalid column sorting
-    const validColumns = columns.map((col) => col.value)
-    const orderBy = validColumns.includes(resolvedSearchParams.orderBy as keyof Incident)
-        ? { [resolvedSearchParams.orderBy!]: 'asc' }
+    // 3. Validate orderBy column and sort direction
+    const validColumns = columnNames
+    const validOrders = ['asc', 'desc']
+
+    const orderByColumn = validColumns.includes(resolvedSearchParams.orderBy as SortableColumn)
+        ? resolvedSearchParams.orderBy
         : undefined
 
-    // // 4. Pass both where AND orderBy to Prisma
-    // const incidents = await prisma.incident.findMany({
-    //     where: { status },
-    //     orderBy,
-    // })
+    const sortOrder = validOrders.includes(resolvedSearchParams.sortOrder || '')
+        ? (resolvedSearchParams.sortOrder as 'asc' | 'desc')
+        : 'asc'
+
+    const orderBy = orderByColumn ? { [orderByColumn]: sortOrder } : undefined
 
     // 4. Parse & calculate pagination params
     const page = parseInt(resolvedSearchParams.page || '1') || 1
     const pageSize = 10
 
-    const where = { status }
+    const where = status ? { status } : {}
 
-    // 5. Query both paginated incidents and total count in parallel
+    // 5. Concurrent DB fetch
     const [incidents, itemCount] = await Promise.all([
         prisma.incident.findMany({
             where,
@@ -61,54 +55,11 @@ const IncidentsPage = async ({ searchParams }: IncidentsPageProps) => {
         prisma.incident.count({ where }),
     ])
 
-    
-
     return (
-        <Flex direction="column" gap="2">
+        <Flex direction="column" gap="3">
             <IncidentActions />
+            <IncidentTable incidents={incidents} resolvedSearchParams={resolvedSearchParams} />
 
-            <Table.Root variant='surface'>
-                <Table.Header>
-                    <Table.Row>
-                        {columns.map((column) => (
-                            <Table.ColumnHeaderCell className={column.className} key={column.value}>
-                                <NextLink
-                                    href={{
-                                        // Use resolvedSearchParams so active filter parameters are preserved
-                                        query: { ...resolvedSearchParams, orderBy: column.value },
-                                    }}
-                                    className='font-medium'
-                                >
-                                    {column.label}
-                                </NextLink>
-                                {column.value === resolvedSearchParams.orderBy && (
-                                    <ArrowUp className="inline ml-1 w-4 h-4" />
-                                )}
-                            </Table.ColumnHeaderCell>
-                        ))}
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {incidents.map((incident) => (
-                        <Table.Row key={incident.id}>
-                            <Table.Cell>
-                                <Link href={`/incidents/${incident.id}`} className='font-medium'>
-                                    {incident.title}
-                                </Link>
-                                <div className='block md:hidden'>
-                                    <IncidentStatusBadge status={incident.status} />
-                                </div>
-                            </Table.Cell>
-                            <Table.Cell className='hidden md:table-cell'>
-                                <IncidentStatusBadge status={incident.status} />
-                            </Table.Cell>
-                            <Table.Cell className='hidden md:table-cell'>
-                                {incident.createdAt.toDateString()}
-                            </Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table.Root>
             <Pagination
                 itemCount={itemCount}
                 pageSize={pageSize}
