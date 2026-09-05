@@ -1,32 +1,36 @@
 // import LatestIncidents from "./LatestIncidents"
 import IncidentChart from "./IncidentChart";
 import IncidentSummary from "./IncidentSummary"
-import { PrismaClient } from "@prisma/client"
-const prisma = new PrismaClient()
+import prisma from '@/prisma/client'
+import { Grid, Flex } from "@radix-ui/themes"
+import LatestIncidents from "./LatestIncidents";
+
 
 export default async function Home() {
-    const open = await prisma.incident.count({
-        where: { status: "OPEN" }
-    });
-    const inProgress = await prisma.incident.count({
-        where: { status: "IN_PROGRESS" }
-    });
-    const closed = await prisma.incident.count({
-        where: { status: "CLOSED" }
-    });
+    const [open, inProgress, closed] = await Promise.all([
+        prisma.incident.count({
+            where: { status: "OPEN" }
+        }),
+        prisma.incident.count({
+            where: { status: "IN_PROGRESS" }
+        }),
+        prisma.incident.count({
+            where: { status: "CLOSED" }
+        }),
+    ])
 
 
     return (
-        <main className="p-5">
-            {/* <LatestIncidents /> */}
-            <IncidentSummary open={open} inProgress={inProgress} closed={closed} />
-            <IncidentChart
-                open={open}
-                inProgress={inProgress}
-                closed={closed}
-            />
+        <Grid columns={{initial: '1', md: '2'}} gap="5">
+            <Flex direction="column" gap="5">
+                <IncidentSummary open={open} inProgress={inProgress} closed={closed} />
+                <IncidentChart open={open} inProgress={inProgress} closed={closed} />
+            </Flex>
+            <LatestIncidents/>
+            
+    
 
            
-        </main>
+        </Grid>
     );
 }
