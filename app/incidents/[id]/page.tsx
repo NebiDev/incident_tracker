@@ -9,6 +9,7 @@ import DeleteIncidentButton from './DeleteIncidentButton'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/app/api/auth/authOptions'
 import AssigneeSelect from './AssigneeSelect'
+import type { Metadata } from 'next'
 
 
 
@@ -27,13 +28,11 @@ const IncidentDetailPage = async ({ params }: Props) => {
     if (!Number.isInteger(incidentId)) {
         notFound()
     }
-
     const incident = await prisma.incident.findUnique({
         where: {
             id: incidentId
         }
     })
-
     if (!incident) {
         notFound()
     }
@@ -59,11 +58,34 @@ const IncidentDetailPage = async ({ params }: Props) => {
                     </Flex>
                 </Box>
             )}
-
-
-            
+           
         </Grid>
     );
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params
+    const incidentId = parseInt(id)
+    if (!Number.isInteger(incidentId)) {
+        return {
+            title: "Incident Not Found",
+            description: "The requested incident does not exist."
+        }
+    }
+    const incident = await prisma.incident.findUnique({
+        where: {
+            id: incidentId
+        }
+    })
+    if (!incident) {
+        return {
+            title: "Incident Not Found",
+            description: "The requested incident does not exist."
+        }
+    }
+    return {
+        title: incident.title,
+        description: `Details for incident #${incident.id}.`
+    }
+}
 export default IncidentDetailPage

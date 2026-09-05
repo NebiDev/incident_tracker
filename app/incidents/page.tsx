@@ -1,9 +1,10 @@
 import prisma from '@/prisma/client'
 import { Flex } from "@radix-ui/themes"
-import IncidentTable, { SearchParamsProps, SortableColumn,  columnNames } from './list/IncidentTable'
-import { Status, Incident } from '@prisma/client'
+import IncidentTable, { SortableColumn,  columnNames } from './list/IncidentTable'
+import { Status } from '@prisma/client'
 import IncidentActions from './list/IncidentActions'
 import Pagination from './_components/Pagination'
+import type { Metadata } from 'next'
 
 interface IncidentsPageProps {
     searchParams: Promise<{
@@ -70,5 +71,10 @@ const IncidentsPage = async ({ searchParams }: IncidentsPageProps) => {
 }
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+    title: "Incidents list",
+    description: "List of all incidents with filtering, sorting, and pagination options.",
+}
 
 export default IncidentsPage

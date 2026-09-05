@@ -1,5 +1,5 @@
 import prisma from '@/prisma/client'
-import { Avatar, Table, Flex, Card, Heading } from "@radix-ui/themes"
+import { Avatar, Table, Flex, Card, Heading, Tooltip } from "@radix-ui/themes"
 import { IncidentStatusBadge } from './components'
 import Link from 'next/link'
 
@@ -31,6 +31,7 @@ const LatestIncidents = async () => {
                                 </Flex>
 
                                 {incident.assignedToUser && (
+                                    <Tooltip content={incident.assignedToUser.name ?? "Assigned user"}>
                                     <Avatar
                                         src={incident.assignedToUser.image ?? undefined}
                                         alt={incident.assignedToUser.name ?? "Assigned user"}
@@ -40,6 +41,7 @@ const LatestIncidents = async () => {
                                             incident.assignedToUser.name?.[0] ?? "?"
                                         }
                                     />
+                                    </Tooltip>
                                 )}
                             </Flex>
                         </Table.Cell>

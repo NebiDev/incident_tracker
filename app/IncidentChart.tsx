@@ -1,7 +1,6 @@
 "use client"
 import { Card } from "@radix-ui/themes"
-import {ResponsiveContainer, PieChart, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Cell, Pie} from 'recharts'
-
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts'
 
 interface Props {
     open: number
@@ -10,27 +9,26 @@ interface Props {
 }
 
 const IncidentChart = ({ open, inProgress, closed }: Props) => {
-
     const data = [
         { label: 'Open', value: open },
         { label: 'In Progress', value: inProgress },
         { label: 'Closed', value: closed },
     ];
-  return (
-    <Card>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data}>
-            <XAxis dataKey="label" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="value" barSize={60} style={{ fill: "var(--accent-9" }} />
 
-          </BarChart>
-        </ResponsiveContainer>
-      
-    </Card>
-  )
+    return (
+        <Card>
+            <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={data}>
+                    <XAxis dataKey="label" />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    {/* Fixed CSS variable string syntax */}
+                    <Bar dataKey="value" barSize={60} style={{ fill: "var(--accent-9)" }} />
+                </BarChart>
+            </ResponsiveContainer>
+        </Card>
+    )
 }
 
 export default IncidentChart

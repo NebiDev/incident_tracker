@@ -46,7 +46,7 @@ const IncidentTable = ({ incidents, resolvedSearchParams }: IncidentTableProps) 
                                             sortOrder: nextSortOrder,
                                         },
                                     }}
-                                    className='font-medium'
+                                    className='font-bold'
                                 >
                                     {column.label}
                                 </NextLink>
