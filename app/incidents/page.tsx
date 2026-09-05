@@ -1,16 +1,18 @@
 import prisma from '@/prisma/client'
-import { Table } from "@radix-ui/themes"
+import { Table, Flex } from "@radix-ui/themes"
 import { IncidentStatusBadge, Link } from '@/app/components'
 import { Status, Incident } from '@prisma/client'
 import NextLink from 'next/link'
 import { ArrowUp } from 'lucide-react'
 
 import IncidentActions from './list/IncidentActions'
+import Pagination from './_components/Pagination'
 
 interface IncidentsPageProps {
     searchParams: Promise<{
         status?: Status
         orderBy?: keyof Incident
+        page?: string
     }>
 }
 
@@ -36,14 +38,33 @@ const IncidentsPage = async ({ searchParams }: IncidentsPageProps) => {
         ? { [resolvedSearchParams.orderBy!]: 'asc' }
         : undefined
 
-    // 4. Pass both where AND orderBy to Prisma
-    const incidents = await prisma.incident.findMany({
-        where: { status },
-        orderBy,
-    })
+    // // 4. Pass both where AND orderBy to Prisma
+    // const incidents = await prisma.incident.findMany({
+    //     where: { status },
+    //     orderBy,
+    // })
+
+    // 4. Parse & calculate pagination params
+    const page = parseInt(resolvedSearchParams.page || '1') || 1
+    const pageSize = 10
+
+    const where = { status }
+
+    // 5. Query both paginated incidents and total count in parallel
+    const [incidents, itemCount] = await Promise.all([
+        prisma.incident.findMany({
+            where,
+            orderBy,
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+        }),
+        prisma.incident.count({ where }),
+    ])
+
+    
 
     return (
-        <div>
+        <Flex direction="column" gap="2">
             <IncidentActions />
 
             <Table.Root variant='surface'>
@@ -88,7 +109,12 @@ const IncidentsPage = async ({ searchParams }: IncidentsPageProps) => {
                     ))}
                 </Table.Body>
             </Table.Root>
-        </div>
+            <Pagination
+                itemCount={itemCount}
+                pageSize={pageSize}
+                currentPage={page}
+            />
+        </Flex>
     )
 }
 
